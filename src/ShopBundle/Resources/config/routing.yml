@@ -1,0 +1,87 @@
+test:
+  path: /test
+  defaults: { _controller: ShopBundle:Base:test }
+
+shop_homepage:
+    path:     /
+    defaults: { _controller: ShopBundle:Index:index }
+
+shop_basket:
+    path:     /cart
+    defaults: { _controller: ShopBundle:Cart:cart }
+
+shop_status:
+    path:     /status
+    defaults: { _controller: ShopBundle:Status:status }
+
+shop_categories:
+    path:     /category/{id}
+    defaults: { _controller: ShopBundle:Categories:categories, id: 1 }
+
+shop_subcategories:
+    path:     /subcategory/{id}
+    defaults: { _controller: ShopBundle:Categories:subcategories }
+
+shop_products:
+    path:     /products/{id}
+    defaults: { _controller: ShopBundle:Products:products }
+
+shop_search:
+    path:     /search/{data}
+    defaults: { _controller: ShopBundle:Search:search, data: null }
+
+shop_order:
+    path:     /order/{code}
+    defaults: { _controller: ShopBundle:Order:show }
+
+shop_comparator:
+    path:     /comparator
+    defaults: { _controller: ShopBundle:Comparator:comparatorView }
+
+shop_registration:
+    path:     /registration/{orderId}
+    defaults: { _controller: ShopBundle:Registration:registration }
+
+shop_contacts:
+    path: /contact
+    defaults: { _controller: ShopBundle:Contact:contact }
+
+ajax_set_currency:
+    path:     /ajax/setCurrency
+    defaults: { _controller: ShopBundle:Base:changeCurrentCurrency }
+    methods: [POST]
+
+ajax_add_to_cart:
+    path:     /ajax/addToCart
+    defaults: { _controller: ShopBundle:Cart:buy }
+    methods: [POST]
+
+ajax_search:
+    path:     /ajax/search
+    defaults: { _controller: ShopBundle:Search:searchAjax }
+    methods: [POST]
+
+ajax_remove_from_cart:
+    path:     /ajax/removeAction
+    defaults: { _controller: ShopBundle:Cart:remove }
+    methods: [POST]
+
+ajax_add_order:
+    path:     /ajax/addOrder
+    defaults: { _controller: ShopBundle:Order:addOrder }
+    methods: [POST]
+
+ajax_add_to_compare:
+    path:     /ajax/addProductToCompareList
+    defaults: { _controller: ShopBundle:Comparator:addProductToCompareList }
+    methods: [POST]
+
+ajax_remove_from_compare:
+    path:     /ajax/removeFromCompare
+    defaults: { _controller: ShopBundle:Comparator:removeFromCompareList }
+    methods: [POST]
+
+ajax_load_more_products:
+    path:     /ajax/loadMoreProducts
+    defaults: { _controller: ShopBundle:Categories:loadMoreProducts }
+    methods: [POST]

@@ -1,0 +1,18 @@
+{% extends "ShopBundle:default:base.html.twig" %}
+
+{% block styles %}
+    {% stylesheets '@ShopBundle/Resources/css/registration/*' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

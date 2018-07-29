@@ -1,0 +1,35 @@
+<?php
+
+namespace ShopBundle\Entity;
+
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="orderitems")
+ */
+class OrderItem {
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="products")
+     */
+    protected $order;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Product")
+     */
+    protected $product;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $count;
+}

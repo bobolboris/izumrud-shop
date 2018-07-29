@@ -1,0 +1,28 @@
+<?php
+
+namespace ShopBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="photos")
+ */
+class Photo {
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $url;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="products")
+     */
+    protected $product;
+}

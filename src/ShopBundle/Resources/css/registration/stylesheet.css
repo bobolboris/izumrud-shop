@@ -1,0 +1,15 @@
+#form_save{
+    display: block;
+    margin: auto;
+}
+.required{
+    min-width: 65px;
+}
+
+#form div{
+    margin: 2px;
+}
+
+#form_birthday select{
+    text-align: center;
+}

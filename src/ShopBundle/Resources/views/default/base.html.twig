@@ -1,0 +1,146 @@
+<!doctype html>
+<html dir="ltr" lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}Цифровая техника{% endblock %}</title>
+    <base href=".">
+    <meta name="description" content="Цифровая техника">
+</head>
+<body>
+
+
+{% stylesheets '@ShopBundle/Resources/css/default/*' filter='cssrewrite' %}
+<link rel="stylesheet" href="{{ asset_url }}" media="screen"/>
+{% endstylesheets %}
+
+{% block styles %}
+{% endblock %}
+
+{% javascripts '@ShopBundle/Resources/js/*' '@ShopBundle/Resources/js/default/*' %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+
+
+{% block scripts %}
+{% endblock %}
+<div id="head">
+<link href="/" rel="canonical">
+<link rel="icon" type="image/x-icon" href="{{ asset('icon.png') }}">
+<nav id="top">
+    <div class="container">
+        <div class="pull-left">
+            <div class="btn-group dropdown">
+                <button class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><strong>$</strong><span class="hidden-xs hidden-sm hidden-md">${ currency.name }</span></button>
+                <ul class="dropdown-menu">
+                    {% for item in currencies %}
+                        <li><button class="currency-select btn btn-link btn-block" type="button" coef="{{ item.coefficient }}" value="{{ item.id }}" v-on:click="onButtonSetCurrencyClick">{{ item.name }}</button></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div id="top-links" class="nav pull-right">
+            <ul class="list-inline">
+                <li><a href="{{ path('shop_contacts') }}"><i class=""></i> <span class="hidden-xs hidden-sm hidden-md">Контакты</span></a></li>
+                <li><a href="{{ path('shop_comparator') }}"><i class=""></i> <span class="hidden-xs hidden-sm hidden-md">Сравнение (${ cmpList.length })</span></a></li>
+                <li><a href="{{ path('shop_basket') }}" id="wishlist-total" title="Корзина"><span class="hidden-xs hidden-sm hidden-md">Корзина (${ cart.length })</span></a></li>
+                <li><a href="{{ path('shop_status') }}" title="Checkout"><i class=""></i> <span class="hidden-xs hidden-sm hidden-md">Статус заказа</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div id="logo">
+                    <h1 style="margin: 0;"><a href="/">Цифровая техника</a></h1>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div id="search" class="input-group">
+                    <input type="text" name="search" list="search_list" v-model="searchData" v-on:keyup="submitAction" placeholder="Поиск" class="form-control input-lg">
+                    <datalist id="search_list">
+                        <option v-for="(item, index) in searchOptions">${item.name}</option>
+                    </datalist>
+                    <span class="input-group-btn"><button type="button" v-on:click="searchAction" class="btn btn-default btn-lg">Найти</button> </span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div id="cart" class="btn-group btn-block">
+                    <button onclick="window.location='{{ path('shop_basket') }}'" type="button" data-loading-text="Loading..." class="btn btn-inverse btn-block btn-lg dropdown-toggle">
+                        <span id="cart-total">${ cart.length } шт. - ${sumC}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <nav id="menu" class="navbar">
+        <div class="navbar-header">
+            <span id="category" class="visible-xs">Категории</span>
+            <button type="button" class="btn btn-navbar navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fa fa-bars"></i></button>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                {% for title in menutitles %}
+                    <li class="dropdown">
+                        <a href="{{ path('shop_categories', {'id': title.id }) }}" class="dropdown-toggle">{{ title.name }}</a>
+                        {% if title.subcategories|length > 0 %}
+                            <div class="dropdown-menu" style="">
+                                <div class="dropdown-inner">
+                                    <ul class="list-unstyled">
+                                        {% for item in title.subcategories %}
+                                            <li><a href="{{ path('shop_subcategories', {'id': item.id }) }}">{{ item.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <a href="{{ path('shop_categories', {'id': title.id }) }}" class="see-all">Показать все {{  title.name }}</a>
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+</div></div>
+<div id="common-home" class="container">
+    {% block body %}
+    <div style="height: 500px;"></div>
+    {% endblock %}
+</div>
+<footer>
+    {% block footer %}
+    <div class="container">
+        <p>Белицкая Марина<br> Цифровая техника © 2017</p>
+    </div>
+    {% endblock %}
+</footer>
+</body>
+
+
+    <script>
+        function fillApp2() {
+            app2.path = '{{ path('shop_search') }}/';
+            app2.currency = { 'id': '{{ currency.id }}', 'name': '{{ currency.name }}', 'coef': '{{ currency.coefficient }}'};
+            app2.sum = {{ sum }};
+            app2.cart = [
+            {% for item in cart %}
+                {{ item }},
+            {% endfor %}];
+
+            app2.cmpList = [
+            {% for item in cmp %}
+                {{ item }},
+            {% endfor %}];
+        }
+
+        {% block vue %}
+        {% endblock %}
+    </script>
+
+
+</html>

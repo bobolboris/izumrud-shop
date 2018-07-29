@@ -1,0 +1,125 @@
+{% extends "ShopBundle:default:base.html.twig" %}
+
+{% block styles %}
+    {% stylesheets '@ShopBundle/Resources/css/categories/*' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block scripts %}
+    {% javascripts '@ShopBundle/Resources/js/categories/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <ul class="breadcrumb">
+        <li><a href="/">Главная</a></li>
+        {% if category != null %}
+            <li><a href="{{ path('shop_subcategories', {'id': category.id }) }}">{{ category.name }}</a></li>
+        {% endif %}
+        <li><a href="{{ path('shop_categories', {'id': target.id }) }}">{{ target.name }}</a></li>
+
+    </ul>
+    <div class="row">
+        <aside id="column-left" class="col-sm-3 hidden-xs">
+            <div class="list-group">
+                {% for title in menutitles %}
+                <div class="one">
+                <a href="{{ path('shop_categories', {'id': title.id }) }}" class="list-group-item active">{{ title.name }}</a>
+                    {% if title.subcategories|length > 0 %}
+                        <div class="item-wrapper">
+                            {% for item in title.subcategories %}
+                                <a href="{{ path('shop_subcategories', {'id': item.id }) }}" class="list-group-item">{{ item.name }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+            </div>
+        </aside>
+
+        <div id="app" class="col-sm-9">
+            <h2>{{ target.name }}</h2>
+            <hr>
+            {% if subcategories|length > 0 %}
+            <h3>Подкатегории</h3>
+            <div class="row">
+                <div class="col-sm-3">
+                    <ul>
+                        {% for item in subcategories %}
+                        <li><a href="{{ path('shop_subcategories', {'id': item.id }) }}">{{ item.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-md-7 col-sm-12">
+                    <div style="height: 30px;"></div>
+                </div>
+                <div class="col-md-5 col-xs-12">
+                    <div class="input-group input-group-sm">
+                        <label class="input-group-addon">Сортировать по:</label>
+                        <select class="form-control" v-model="sortParam">
+                            <option value="1" selected>По-умолчанию</option>
+                            <option value="1">По названию (А - Я)</option>
+                            <option value="2">По названию (Я - А)</option>
+                            <option value="3">Цена (Дешевли - Дороже)</option>
+                            <option value="4">Цена (Дороже - Дешевли)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="height: 30px;"></div>
+            <div class="row" v-for="(item, index) in productsList">
+                <div class="product-layout product-list col-xs-12">
+                    <div class="product-thumb">
+                        <div class="image">
+                            <div style="max-width: 200px; height: 160px; margin-top: 10px; margin-bottom: 10px;">
+                                <a v-bind:href="item.url" style="width: 200px;">
+                                    <img style="max-width: 200px; max-height: 160px;" v-bind:src="item.photo" v-bind:alt="item.name" v-bind:title="item.name" />
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="caption">
+                                <h4>
+                                    <a v-bind:href="item.url">${ item.name }</a>
+                                </h4>
+                                <p>${ item.description }</p>
+                                <p class="price">
+                                    <span class="price-new">${ products[index].price }</span>
+                                </p>
+                            </div>
+                            <div class="button-group" style="clear: both;">
+                                <button type="button" v-on:click="buy(item.id)">Купить</button>
+                                <button type="button" v-on:click="addToCompareList(item.id)">Сравнить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" v-if="loaded">
+                <div class="col-md-5"></div>
+                <div class="col-md-2" style="text-align: center"><img src="/bitmaps/loading.gif"></div>
+                <div class="col-md-5"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block vue %}
+    function fill(){
+        app.stamp = {{ stamp }};
+        app.targetId = {{ targetId }};
+        app.products = [
+        {% for item in products %}
+            { id: {{ item.id }}, name: '{{ item.name }}', photo: '{{ item.photo }}',
+            description: "{{ item.description|slice(0, 200) }}...", url: '{{ path('shop_products', {'id': item.id }) }}',
+            price: {{ item.price }}, sprice: {{ item.price }} },
+        {% endfor %}];
+    }
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "ShopBundle:default:base.html.twig" %}
+
+{% block scripts %}
+    {% javascripts '@ShopBundle/Resources/js/comparator/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="table-responsive" id="app">
+        <p style="text-align: center;" v-if="products.length == 0">Пусто</p>
+        <table class="table table-bordered" v-if="products.length > 0">
+            <thead>
+            <tr>
+                <td></td>
+                <td class="text-center" v-for="(item, index) in products">
+                    <div style="height: 100px;">
+                        <a v-bind:href="item.url">
+                            <img style="max-height: 100px;" v-bind:src="item.photo" width="100" v-bind:alt="item.name" v-bind:title="item.name" class="img-thumbnail">
+                        </a>
+                    </div>
+                    <p><a v-bind:href="item.url">${ products[index].name }</a></p>
+                    <button class="btn btn-danger" v-on:click="remove(index)">Удалить</button>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in values">
+                    <td class="text-center">${ item.name }</td>
+                    <td class="text-center" v-for="(itm, i) in item.values">${ item.values[i] }</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+{% endblock %}
+
+{% block vue %}
+    function fill(){
+
+        app.products = [
+    {% for item in products %}
+        { id: {{ item.id }}, name: '{{ item.name }}',
+        photo: '{{ item.photo }}', url: '{{ path('shop_products', {'id': item.id }) }}' },
+    {% endfor %}];
+
+
+    {% for item in values %}
+        tmp = [];
+        {% for name in item.values %}
+            tmp.push('{{ name }}');
+        {% endfor %}
+        app.values.push({ name: '{{ item.name }}', values: tmp});
+    {% endfor %}
+
+    }
+{% endblock %}

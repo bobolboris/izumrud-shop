@@ -1,0 +1,71 @@
+{% extends "ShopBundle:default:base.html.twig" %}
+
+{% block scripts %}
+    {% javascripts '@ShopBundle/Resources/js/order/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <div id="app">
+        <p style="font-size: 20px">Номер заказа: {{ code }}</p>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td class="text-center">Изображение</td>
+                    <td class="text-left">Название</td>
+                    <td class="text-left">Количество</td>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for item in products %}
+                    <tr>
+                        <td class="text-center">
+                            <a href="{{ path('shop_products', {'id': item.product.id }) }}">
+                                <img src="{{ item.product.photo }}" width="100" alt="{{ item.product.name }}" title="{{ item.product.name }}" class="img-thumbnail">
+                            </a>
+                        </td>
+                        <td class="text-left">
+                            <a href="{{ path('shop_products', {'id': item.product.id }) }}">{{ item.product.name }}</a>
+                            <br>
+                        </td>
+                        <td class="text-left">
+                            {{ item.count }}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+
+                </tbody>
+
+            </table>
+        </div>
+
+
+    <div style="height: 120px"></div>
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-8">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="text-right"><strong>Статус заказа:</strong></td>
+                        <td class="text-right">{{ status }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><strong>Всего:</strong></td>
+                        <td class="text-right">${ sum }</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block vue %}
+    function fill(){
+        app.sumS = {{ sumS }};
+    }
+{% endblock %}

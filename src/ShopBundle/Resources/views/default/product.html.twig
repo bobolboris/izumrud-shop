@@ -1,0 +1,83 @@
+{% extends "ShopBundle:default:base.html.twig" %}
+
+{% block scripts %}
+    {% javascripts '@ShopBundle/Resources/js/product/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+<ul class="breadcrumb">
+    <li><a href="/">Главная</a></li>
+    <li><a href="{{ path('shop_categories', {'id': category.id }) }}">{{ category.name }}</a></li>
+    <li><a href="{{ path('shop_subcategories', {'id': subcategory.id }) }}">{{ subcategory.name }}</a></li>
+    <li><a href="">{{ product.name }}</a></li>
+</ul>
+<div class="row">
+    <div id="app">
+    <div id="content" class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-8">
+                <ul class="thumbnails">
+                    <li><a class="thumbnail" href="{{ product.photo }}" title="{{ product.name }}"><img src="{{ product.photo }}" title="{{ product.name }}" alt="{{ product.name }}"></a></li>
+                    <li class="image-additional"><a class="thumbnail" href="{{ product.photo }}" title="{{ product.name }}"><img src="{{ product.photo }}" title="{{ product.name }}" alt="{{ product.name }}"></a></li>
+                    {#<li class="image-additional"><a class="thumbnail" href="http://localhost/image/cache/catalog/demo/canon_logo-500x500.jpg" title="Apple Cinema 30&quot;"> <img src="./Apple Cinema 30_files/canon_logo-74x74.jpg" title="Apple Cinema 30&quot;" alt="Apple Cinema 30&quot;"></a></li>#}
+                    {#<li class="image-additional"><a class="thumbnail" href="http://localhost/image/cache/catalog/demo/hp_1-500x500.jpg" title="Apple Cinema 30&quot;"> <img src="./Apple Cinema 30_files/hp_1-74x74.jpg" title="Apple Cinema 30&quot;" alt="Apple Cinema 30&quot;"></a></li>#}
+                    {#<li class="image-additional"><a class="thumbnail" href="http://localhost/image/cache/catalog/demo/compaq_presario-500x500.jpg" title="Apple Cinema 30&quot;"> <img src="./Apple Cinema 30_files/compaq_presario-74x74.jpg" title="Apple Cinema 30&quot;" alt="Apple Cinema 30&quot;"></a></li>#}
+                    {#<li class="image-additional"><a class="thumbnail" href="http://localhost/image/cache/catalog/demo/canon_eos_5d_1-500x500.jpg" title="Apple Cinema 30&quot;"> <img src="./Apple Cinema 30_files/canon_eos_5d_1-74x74.jpg" title="Apple Cinema 30&quot;" alt="Apple Cinema 30&quot;"></a></li>#}
+                    {#<li class="image-additional"><a class="thumbnail" href="http://localhost/image/cache/catalog/demo/canon_eos_5d_2-500x500.jpg" title="Apple Cinema 30&quot;"> <img src="./Apple Cinema 30_files/canon_eos_5d_2-74x74.jpg" title="Apple Cinema 30&quot;" alt="Apple Cinema 30&quot;"></a></li>#}
+                </ul>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="http://localhost/#tab-description" data-toggle="tab" aria-expanded="true">Описание</a>
+                    </li>
+                    <li class="">
+                        <a href="http://localhost/#tab-specification" data-toggle="tab" aria-expanded="false">Спецификация</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-description"><p>
+                        <p>{{ product.description }}</p>
+                    </div>
+                    <div class="tab-pane" id="tab-specification">
+                        <table class="table table-bordered">
+                            <thead>
+                            </thead>
+                            <tbody>
+                            {% for item in specification %}
+                                <tr>
+                                    <td>{{ item.name.name }}</td>
+                                    <td>{{ item.value }}</td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" v-on:click="addToCompareList" data-original-title="Сравнить">Сравнить</button>
+                </div>
+                <h1>{{ product.name }}</h1>
+                <br>
+                <br>
+                <h2>${ priceC }</h2>
+                <div>
+                    <button type="button" id="button-cart" v-on:click="buy" class="btn btn-primary btn-lg btn-block">Купить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block vue %}
+    function fill(){
+        app.id = {{ product.id }}
+        app.price = {{ product.price }}
+    }
+{% endblock %}

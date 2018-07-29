@@ -1,0 +1,72 @@
+services:
+  admin.category:
+      class: ShopBundle\Admin\CategoryAdmin
+      arguments: [~, ShopBundle\Entity\Category, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Меню", label: Категории }
+
+  admin.subcategory:
+      class: ShopBundle\Admin\SubcategoryAdmin
+      arguments: [~, ShopBundle\Entity\Subcategory, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Меню", label: Подкатегории }
+
+  admin.currency:
+      class: ShopBundle\Admin\CurrencyAdmin
+      arguments: [~, ShopBundle\Entity\Currency, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Меню", label: Валюта }
+
+  admin.product:
+      class: ShopBundle\Admin\ProductAdmin
+      arguments: [~, ShopBundle\Entity\Product, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Товары", label: Товар }
+
+  admin.productspecification:
+      class: ShopBundle\Admin\ProductSpecificationAdmin
+      arguments: [~, ShopBundle\Entity\ProductSpecification, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Товары", label: Спецификации товаров }
+
+  admin.specificationnames:
+      class: ShopBundle\Admin\SpecificationNamesAdmin
+      arguments: [~, ShopBundle\Entity\SpecificationNames, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Товары", label: Названия спецификаций }
+
+  admin.orders:
+      class: ShopBundle\Admin\OrdersAdmin
+      arguments: [~, ShopBundle\Entity\Order, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Заказы", label: Заказы }
+
+  admin.orderitem:
+      class: ShopBundle\Admin\OrderItemAdmin
+      arguments: [~, ShopBundle\Entity\OrderItem, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Заказы", label: Покупки }
+
+  admin.orderstatuses:
+      class: ShopBundle\Admin\OrderStatusesAdmin
+      arguments: [~, ShopBundle\Entity\OrderStatuses, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Меню", label: Статусы заказов }
+
+  admin.cities:
+      class: ShopBundle\Admin\CityAdmin
+      arguments: [~, ShopBundle\Entity\City, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Меню", label: Города }
+
+  admin.clients:
+      class: ShopBundle\Admin\ClientAdmin
+      arguments: [~, ShopBundle\Entity\Client, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Заказы", label: Клиенты }
+
+  admin.photos:
+      class: ShopBundle\Admin\PhotoAdmin
+      arguments: [~, ShopBundle\Entity\Photo, ~]
+      tags:
+      - { name: sonata.admin, manager_type: orm, group: "Меню", label: Фото товара }

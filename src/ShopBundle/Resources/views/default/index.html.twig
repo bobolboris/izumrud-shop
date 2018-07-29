@@ -1,0 +1,70 @@
+{% extends "ShopBundle:default:base.html.twig" %}
+
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('slick/slick.css') }}" media="screen">
+    <link rel="stylesheet" href="{{ asset('slick/slick-theme.css') }}" media="screen">
+
+    {% stylesheets '@ShopBundle/Resources/css/index/*' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" media="screen" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('slick/slick.min.js') }}"></script>
+    {% javascripts '@ShopBundle/Resources/js/index/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="swiper-viewport">
+        <section class="lazy slider" data-sizes="50vw">
+            {% for item in products %}
+                <div>
+                    <a href="{{ path('shop_products', {'id': item.id }) }}">
+                        <img data-lazy="{{ item.photo }}" data-srcset="{{ item.photo }}" data-sizes="100vw">
+                    </a>
+                    <div style="text-align: center;"><a href="{{ path('shop_products', {'id': item.id }) }}">{{ item.name }}</a></div>
+                </div>
+            {% endfor %}
+        </section>
+    </div>
+    <div id="app" class="container">
+
+        <div class="row">
+            <div id="content" class="col-sm-12">
+                <h3>Последнее</h3>
+                <div class="row">
+                    <div class="product-layout col-lg-3 col-md-3 col-sm-6 col-xs-12" v-for="item in productsList">
+                        <div class="product-thumb transition" style="max-width: 232.5px;">
+                            <div class="image" style="height: 200px; margin: 10px; overflow: hidden;">
+                                <a v-bind:href="item.url"><img style="max-width: 200px;" v-bind:src="item.photo" v-bind:alt="item.name" v-bind:title="item.name" class="img-responsive"></a>
+                            </div>
+                            <div class="caption">
+                                <h4><a v-bind:href="item.url">${ item.name }</a></h4>
+                                <p style="max-height: 160px; overflow: hidden;">${ item.description }</p>
+                                <p class="price"><strong>${ item.price }</strong></p>
+                            </div>
+                            <div class="button-group">
+                                <button type="button" v-on:click="buy(item.id)">Купить</button>
+                                <button type="button" v-on:click="addToCompareList(item.id)">Сравнить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block vue %}
+    function fill(){
+    app.products = [
+    {% for item in products %}
+         { id: {{ item.id }}, name: '{{ item.name }}', photo: '{{ item.photo}}' ,
+        description: '{{ item.description|slice(0, 200) }}...', url: '{{ path('shop_products', {'id': item.id }) }}',
+        price: {{ item.price }}, sprice: {{ item.price }} },
+    {% endfor %}];
+    }
+{% endblock %}
